@@ -70,7 +70,13 @@ pop_end :: (list: &List($T), default: T = .{}) -> T {
 
     end := list.last;
     list.last = list.last.prev;
-    list.last.next = null;
+
+    if list.last != null {
+        list.last.next = null;
+    } else {
+        // list is now empty
+        list.first = null;
+    }
 
     defer raw_free(list.allocator, end);
     return end.data;
@@ -81,10 +87,20 @@ pop_begin :: (list: &List($T), default: T = .{}) -> T {
 
     begin := list.first;
     list.first = list.first.next;
-    list.first.prev = null;
+
+    if list.first != null {
+        list.first.prev = null;
+    } else {
+        // List is empty
+        list.last = null;
+    }
 
     defer raw_free(list.allocator, begin);
     return begin.data;
+}
+
+empty :: (list: &List) -> bool {
+    return list.first == null && list.last == null;
 }
 
 count :: (list: &List) -> i32 {

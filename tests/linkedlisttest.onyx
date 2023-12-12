@@ -1,0 +1,121 @@
+use my.list
+use core.test
+use core {println, tprintf}
+
+
+#tag test.test
+test_empty_list :: (t: &test.T) {
+
+    l := list.make(i32);
+
+    t->assert(l.first == null, "list.first is not null");
+    t->assert(l.last == null, "list.end is not null");
+    t->assert(list.count(&l) == 0, "list is not empty");
+}
+use core {println}
+
+
+#tag test.test
+test_push_end :: (t: &test.T) {
+
+    l := list.make(i32);
+
+    list.push_end(&l, 1);
+    list.push_end(&l, 3);
+    list.push_end(&l, 5);
+
+    t->assert(list.count(&l) == 3, "list has wrong size");
+}
+
+
+#tag test.test.{"test_push_end_pop_end"}
+test_push_end_pop_end :: (t: &test.T) {
+
+    l := list.make(i32);
+
+    list.push_end(&l, 1);
+    list.push_end(&l, 3);
+    list.push_end(&l, 5);
+
+    t->assert(list.pop_end(&l) == 5);
+    t->assert(list.pop_end(&l) == 3);
+    t->assert(list.pop_end(&l) == 1);
+
+    t->assert(l.first == null, "list.first is not null");
+    t->assert(l.last == null, "list.end is not null");
+    t->assert(list.count(&l) == 0, "list is not empty");
+}
+
+
+#tag test.test.{"test_push_begin"}
+test_push_begin :: (t: &test.T) {
+
+    l := list.make(i32);
+
+    list.push_begin(&l, 5);
+    list.push_begin(&l, 3);
+    list.push_begin(&l, 1);
+
+    t->assert(list.count(&l) == 3, "list has wrong size");
+}
+
+
+#tag test.test.{"test_push_begin_pop_begin"}
+test_push_begin_pop_begin :: (t: &test.T) {
+
+    l := list.make(i32);
+
+    list.push_begin(&l, 5);
+    list.push_begin(&l, 3);
+    list.push_begin(&l, 1);
+
+    t->assert(list.pop_begin(&l) == 1);
+    t->assert(list.pop_begin(&l) == 3);
+    t->assert(list.pop_begin(&l) == 5);
+
+    t->assert(l.first == null, "list.first is not null");
+    t->assert(l.last == null, "list.end is not null");
+    t->assert(list.count(&l) == 0, "list is not empty");
+}
+
+
+#tag test.test.{"test_push_end_pop_begin"}
+test_push_end_pop_begin :: (t: &test.T) {
+
+    l := list.make(i32);
+
+    list.push_end(&l, 1);
+    list.push_end(&l, 3);
+    list.push_end(&l, 5);
+
+    t->assert(list.pop_begin(&l) == 1);
+    t->assert(list.pop_begin(&l) == 3);
+    t->assert(list.pop_begin(&l) == 5);
+
+    t->assert(l.first == null, "list.first is not null");
+    t->assert(l.last == null, "list.end is not null");
+    t->assert(list.count(&l) == 0, "list is not empty");
+}
+
+
+#tag test.test.{"test_push_begin_pop_end"}
+test_push_begin_pop_end :: (t: &test.T) {
+
+    l := list.make(i32);
+
+    list.push_begin(&l, 5);
+    list.push_begin(&l, 3);
+    list.push_begin(&l, 1);
+
+    t->assert(list.pop_end(&l) == 5);
+    t->assert(list.pop_end(&l) == 3);
+    t->assert(list.pop_end(&l) == 1);
+
+    t->assert(l.first == null, "list.first is not null");
+    t->assert(l.last == null, "list.end is not null");
+    t->assert(list.count(&l) == 0, "list is not empty");
+}
+
+main :: () {
+    test.run_tests();
+}
